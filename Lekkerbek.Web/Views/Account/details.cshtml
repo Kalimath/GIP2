@@ -1,0 +1,90 @@
+﻿@using Lekkerbek.Web.Models.Identity
+@model Lekkerbek.Web.Models.Identity.Gebruiker
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>
+        @if (Model.IsProfessional)
+        {
+        @Html.DisplayText("Professionele klant")
+        }
+        else
+        {
+            @Html.DisplayText("Gebruiker") 
+        }
+    </h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Id
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Gebruikersnaam
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Adres)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Adres)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Geboortedatum)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Geboortedatum)
+        </dd>
+        <dt class="col-sm-2">
+            Rol
+        </dt>
+        <dd class="col-sm-10">
+            @Html.ViewBag.Rol
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Getrouwheidsscore)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Getrouwheidsscore)
+        </dd>
+        @if (Model.IsProfessional)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FirmaNaam)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FirmaNaam)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.BtwNummer)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BtwNummer)
+            </dd>
+        }
+
+
+
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

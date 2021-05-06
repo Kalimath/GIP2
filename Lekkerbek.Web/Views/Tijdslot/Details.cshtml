@@ -1,0 +1,127 @@
+﻿@using Lekkerbek.Web.Models.Identity
+@model Lekkerbek.Web.Models.Tijdslot
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Tijdslot</h4>
+    <hr />
+    
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tijdstip)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tijdstip)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsVrij)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsVrij)
+        </dd>
+    </dl>
+    @if (!Model.IsVrij)
+    {
+
+        var bestelling = new Bestelling();
+        if (((Bestelling)ViewBag.Bestelling) != null)
+        {
+            bestelling = ((Bestelling)ViewBag.Bestelling);
+        }
+<dl class="row">
+    <dt class="col-sm-2">
+        Speciale wensen
+    </dt>
+    <dd class="col-sm-10">
+        @bestelling.Opmerkingen
+    </dd>
+    <dt class="col-sm-2">
+        Aantal maaltijden
+    </dt>
+    <dd class="col-sm-10">
+        @bestelling.AantalMaaltijden
+    </dd>
+
+    <dt class="col-sm-2">
+        Status:
+    </dt>
+    @if (Model.InGebruikDoorKok != null)
+    {
+        if (bestelling.IsAfgerond)
+        {
+            <dd class="col-sm-10">
+                Bestelling afgerond
+            </dd>
+
+        }
+        else
+        {
+            <dd class="col-sm-10">
+                In bereiding
+            </dd>
+
+        }
+    }
+    else
+    {
+        <dd class="col-sm-10">
+            Bestelling geplaatst
+        </dd>
+    }
+
+    <dt class="col-sm-2">
+        Bereidt door
+    </dt>
+    <dd>
+        @Html.DisplayFor(modelItem => Model.InGebruikDoorKok.UserName)
+    </dd>
+
+</dl>
+        <p></p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Gerecht
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @{ var gerechten = bestelling.GerechtenLijst;}
+            @foreach (Gerecht item in gerechten)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Naam)
+                    </td>
+                    <td>
+                        <a asp-controller="Gerecht" asp-action="Details" asp-route-id="@item.Naam">Details</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <div>
+            @if (User.IsInRole(RollenEnum.Kok.ToString())&& Model.InGebruikDoorKok == null)
+            {
+                <form asp-controller="Tijdslot" asp-action="Toegewezen" asp-route-id="@Model.Id">
+                    <input type="submit" value="Bereiden" />
+                </form>
+            }
+        </div>
+    }
+</div>
+<div>
+@if (User.IsInRole(RollenEnum.Admin.ToString()) || User.IsInRole(RollenEnum.Kassamedewerker.ToString()))
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>}
+    <a asp-action="Index">Back to List</a>
+    
+</div>
+
